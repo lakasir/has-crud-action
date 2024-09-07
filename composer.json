@@ -1,0 +1,56 @@
+{
+    "name": "lakasir/has-crud-action",
+    "description": "Has-CRUD-Action is a Laravel package that simplifies adding CRUD (Create, Read, Update, Delete) operations to your models.",
+    "keywords": [
+        "lakasir",
+        "has-crud-action",
+        "crud-generator",
+        "crud-builder"
+    ],
+    "homepage": "https://github.com/lakasir/has-crud-action",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "lakasir",
+            "email": "lakasirapp@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.4|^8.0",
+        "illuminate/support": "^8.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.0",
+        "phpunit/phpunit": "^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lakasir\\HasCrudAction\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lakasir\\HasCrudAction\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Lakasir\\HasCrudAction\\HasCrudActionServiceProvider"
+            ],
+            "aliases": {
+                "HasCrudAction": "Lakasir\\HasCrudAction\\HasCrudActionFacade"
+            }
+        }
+    }
+}
