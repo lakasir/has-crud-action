@@ -1,13 +1,13 @@
 <?php
 
-namespace Lakasir\HasCrudAction;
+namespace Lakasir\HasCrudAction\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
  * @see \Lakasir\HasCrudAction\Skeleton\SkeletonClass
  */
-class HasCrudActionFacade extends Facade
+class HasCrudAction extends Facade
 {
     /**
      * Get the registered name of the component.

@@ -2,7 +2,12 @@
 
 namespace Lakasir\HasCrudAction;
 
+use Illuminate\Support\Facades\Route;
+
 class HasCrudAction
 {
-    // Build your next great package.
+    public function route(string $route, string $controller)
+    {
+        Route::resource($route, $controller);
+    }
 }
