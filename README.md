@@ -40,7 +40,7 @@ class SupplierController extends HasCrudActionAbstract
 
 ### Methods
 `rules` the rules method allows you to add your own rules to the action.
-```
+```php
 public static function rules(): array
 {
     return [
@@ -51,7 +51,7 @@ public static function rules(): array
 ```
 
 `beforeStore` the beforeStore method allows you to modify the data before it is stored.
-```
+```php
 public static function beforeStore($data, $model): Model
 {
     $model->name = strtoupper($data['name']);
@@ -61,7 +61,7 @@ public static function beforeStore($data, $model): Model
 ```
 
 `beforeUpdate` the beforeUpdate method allows you to modify the data before it is updated.
-```
+```php
 public static function beforeUpdate($data, $model): Model
 {
     $model->name = strtoupper($data['name']);
@@ -70,8 +70,18 @@ public static function beforeUpdate($data, $model): Model
 }
 ```
 
-`response` the response method allows you to modify the response data.
+`beforeDestroy` the beforeDestroy method allows you to modify the data before it is destroyed.
+```php
+public static function beforeDestroy($model): Model
+{
+    dd($model);
+
+    return $model;
+}
 ```
+
+`response` the response method allows you to modify the response data.
+```php
 public static function response($record)
 {
     return [
