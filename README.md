@@ -4,13 +4,13 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/lakasir/has-crud-action.svg?style=flat-square)](https://packagist.org/packages/lakasir/has-crud-action)
 ![GitHub Actions](https://github.com/lakasir/has-crud-action/actions/workflows/main.yml/badge.svg)
 
-`has-crud-action` is a GitHub Action designed to streamline CRUD (Create, Read, Update, Delete) operations for your projects. This action simplifies and automates workflows for managing data entities within your repository or connected services.
+`has-crud-action` is a laravel package that provides CRUD actions easily.
 
 ## Features
 
 * **CRUD** - easily create, read, update, and delete data entities.
 * **Rules** - you can add the rules for your CRUD actions on the fly.
-* **Magic Parameters** - use magic parameters to create CRUD actions.
+* **Magic Parameters** - magic parameters that can be used in your actions.
 
 ## Getting Started
 
@@ -105,6 +105,8 @@ composer test
 * [ ] ModifyQuery
 * [ ] Error handler for unsupported magic parameter
 * [ ] Relation support
+* [ ] Unit test
+* [ ] Pipeline
 
 ### Changelog
 
