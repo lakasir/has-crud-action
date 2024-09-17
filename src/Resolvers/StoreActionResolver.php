@@ -29,6 +29,7 @@ class StoreActionResolver extends BaseActionResolver
             'model' => $model,
             'action' => 'store',
             'route' => Route::getCurrentRoute()->getName(),
+            'data' => $data,
         ]);
 
         if (method_exists($controller, 'rules')) {

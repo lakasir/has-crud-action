@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use InvalidArgumentException;
-use Lakasir\HasCrudAction\Resolvers\BaseActionResolver;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException;
 
@@ -30,6 +29,7 @@ class UpdateActionResolver extends BaseActionResolver
             'model' => new $controller::$model(),
             'action' => 'update',
             'id' => $id,
+            'data' => $data,
             'route' => Route::getCurrentRoute()->getName(),
         ]);
 
@@ -44,7 +44,6 @@ class UpdateActionResolver extends BaseActionResolver
         if (method_exists($controller, 'beforeUpdate')) {
             $model = $this->resolveParameters($controller, 'beforeUpdate', array_merge($availableParams, [
                 'model' => $model,
-                'data' => $data,
             ]));
         }
         $model->save();
