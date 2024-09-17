@@ -4,6 +4,8 @@ namespace Lakasir\HasCrudAction\Resolvers;
 
 use Illuminate\Support\Facades\Route;
 use InvalidArgumentException;
+use Lakasir\HasCrudAction\Interfaces\WithPagination;
+use Lakasir\HasCrudAction\Interfaces\WithSimplePagination;
 use ReflectionException;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException;
@@ -28,12 +30,31 @@ class IndexActionResolver extends BaseActionResolver
             'route' => Route::getCurrentRoute()->getName(),
         ]);
 
+        $usingPagintation = false;
+        if ($controller instanceof WithPagination) {
+            $usingPagintation = true;
+        }
+
+        $simplePagination = false;
+        if ($controller instanceof WithSimplePagination) {
+            $simplePagination = true;
+        }
+
         if (! method_exists($controller, 'response')) {
-            return $controller::$model::all();
+            if ($simplePagination) {
+                return $controller::$model::simplePaginate();
+            }
+
+            return $usingPagintation ? $controller::$model::paginate() : $controller::$model::all();
+        }
+
+        $record = $usingPagintation ? $controller::$model::paginate() : $controller::$model::all();
+        if ($simplePagination) {
+            $record = $controller::$model::simplePaginate();
         }
 
         $response = $this->resolveParameters($controller, 'response', array_merge($availableParams, [
-            'record' => $controller::$model::all(),
+            'record' => $record,
         ]));
 
         return $response;
