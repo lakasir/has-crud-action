@@ -6,13 +6,12 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use InvalidArgumentException;
-use Lakasir\HasCrudAction\Resolvers\BaseActionResolver;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException;
 
 class StoreActionResolver extends BaseActionResolver
 {
-    /**
+    /*
      * @param  class-string  $controller
      * @param  mixed  $data
      * @return mixed
@@ -24,9 +23,10 @@ class StoreActionResolver extends BaseActionResolver
      */
     public function resolve($controller, $data)
     {
+        $model = new $controller::$model();
         $availableParams = array_merge($this->availableKeyParams(), [
             'method' => Route::getCurrentRequest()->method(),
-            'model' => new $controller::$model(),
+            'model' => $model,
             'action' => 'store',
             'route' => Route::getCurrentRoute()->getName(),
         ]);
@@ -37,7 +37,7 @@ class StoreActionResolver extends BaseActionResolver
             Validator::make($data, $rules)->validate();
         }
 
-        $model = new $controller::$model();
+        $model = $model;
         $model->fill($data);
         if (method_exists($controller, 'beforeStore')) {
             $model = $this->resolveParameters($controller, 'beforeStore', array_merge($availableParams, [
@@ -45,7 +45,6 @@ class StoreActionResolver extends BaseActionResolver
                 'data' => $data,
             ]));
         }
-        $model->save();
 
         if (! method_exists($controller, 'response')) {
             return $model;
