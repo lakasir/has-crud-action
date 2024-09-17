@@ -20,7 +20,8 @@
     ],
     "require": {
         "php": "^8.2",
-        "illuminate/support": "^11.9"
+        "illuminate/support": "^11.9",
+        "spatie/laravel-query-builder": "^6.0"
     },
     "require-dev": {
         "orchestra/testbench": "^9.0",

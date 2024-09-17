@@ -2,11 +2,13 @@
 
 namespace Lakasir\HasCrudAction\Resolvers;
 
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 use InvalidArgumentException;
 use Lakasir\HasCrudAction\Interfaces\WithPagination;
 use Lakasir\HasCrudAction\Interfaces\WithSimplePagination;
 use ReflectionException;
+use Spatie\QueryBuilder\QueryBuilder;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException;
 
@@ -23,11 +25,13 @@ class IndexActionResolver extends BaseActionResolver
      */
     public function resolve($controller)
     {
+        $model = app($controller::$model);
         $availableParams = array_merge($this->availableKeyParams(), [
             'method' => Route::getCurrentRequest()->method(),
-            'model' => new $controller::$model(),
+            'model' => $model,
             'action' => 'index',
             'route' => Route::getCurrentRoute()->getName(),
+            'input' => Request::input(),
         ]);
 
         $usingPagintation = false;
@@ -40,17 +44,22 @@ class IndexActionResolver extends BaseActionResolver
             $simplePagination = true;
         }
 
-        if (! method_exists($controller, 'response')) {
-            if ($simplePagination) {
-                return $controller::$model::simplePaginate();
-            }
-
-            return $usingPagintation ? $controller::$model::paginate() : $controller::$model::all();
+        if (method_exists($controller, 'filter')) {
+            $model = QueryBuilder::for($model)
+                ->allowedFilters($this->resolveParameters($controller, 'filter', $availableParams));
         }
 
-        $record = $usingPagintation ? $controller::$model::paginate() : $controller::$model::all();
+        if (! method_exists($controller, 'response')) {
+            if ($simplePagination) {
+                return $model->simplePaginate();
+            }
+
+            return $usingPagintation ? $model->paginate() : $model->get();
+        }
+
+        $record = $usingPagintation ? $model->paginate() : $model->get();
         if ($simplePagination) {
-            $record = $controller::$model::simplePaginate();
+            $record = $model->simplePaginate();
         }
 
         $response = $this->resolveParameters($controller, 'response', array_merge($availableParams, [
