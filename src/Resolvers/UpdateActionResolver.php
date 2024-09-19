@@ -39,7 +39,7 @@ class UpdateActionResolver extends BaseActionResolver
             Validator::make($data, $rules)->validate();
         }
 
-        $model = $controller::$model::find($id);
+        $model = $controller::$model::findOrFail($id);
         $model->fill($data);
         if (method_exists($controller, 'beforeUpdate')) {
             $model = $this->resolveParameters($controller, 'beforeUpdate', array_merge($availableParams, [
